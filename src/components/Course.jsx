@@ -1,7 +1,15 @@
 const Course = ({ key, course }) => (
-  <p>
-    {course.term} CS {course.number}: {course.title}
-  </p>
+  <div className="card m-1 p-2">
+    <div className="card-body">
+      <h5 class="fw-semibold" className="card-title">
+        {course.term} CS {course.number}
+      </h5>
+      <p className="card-text">{course.title}</p>
+    </div>
+    <div className="card-footer bg-transparent">
+      <p className="card-text">{course.meets}</p>
+    </div>
+  </div>
 );
 
 export default Course;
