@@ -6,7 +6,7 @@ import CoursePlan from "./CoursePlan";
 const terms = ["Fall", "Winter", "Spring"];
 
 const TermButton = ({ termName, selectedTerm, setTerm }) => (
-  <div>
+  <div className="mx-1">
     <input
       type="radio"
       id={termName}
