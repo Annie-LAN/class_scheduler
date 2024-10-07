@@ -3,41 +3,55 @@ import CourseList from "./CourseList";
 
 const terms = ["Fall", "Winter", "Spring"];
 
-const TermButton = ({ term, selection, setSelection }) => (
+const TermButton = ({ termName, selectedTerm, setTerm }) => (
   <div>
     <input
       type="radio"
-      id={term}
+      id={termName}
       className="btn-check"
-      checked={term === selection}
+      checked={termName === selectedTerm}
       autoComplete="off"
-      onChange={() => setSelection(term)}
+      onChange={() => setTerm(termName)}
     />
-    <label className="btn btn-success mb-1 p-2" htmlFor={term}>
-      {term}
+    <label className="btn btn-success mb-1 p-2" htmlFor={termName}>
+      {termName}
     </label>
   </div>
 );
 
-const TermSelector = ({ selection, setSelection }) => (
+const TermSelector = ({ selectedTerm, setTerm }) => (
   <div className="btn-group">
-    {terms.map((term) => (
+    {terms.map((t) => (
       <TermButton
-        key={term}
-        term={term}
-        selection={selection}
-        setSelection={setSelection}
+        key={t}
+        termName={t}
+        selectedTerm={selectedTerm}
+        setTerm={setTerm}
       />
     ))}
   </div>
 );
 
 const TermPage = ({ courses }) => {
-  const [selection, setSelection] = useState(terms[0]);
+  const [term, setTerm] = useState(terms[0]);
+  const [selectedCards, setSelectedCards] = useState([]);
+
+  const toggleSelectedCards = (item) =>
+    setSelectedCards(
+      selectedCards.includes(item)
+        ? selectedCards.filter((x) => x !== item)
+        : [...selectedCards, item]
+    );
+
   return (
     <div>
-      <TermSelector selection={selection} setSelection={setSelection} />
-      <CourseList courses={courses} selection={selection} />
+      <TermSelector selectedTerm={term} setTerm={setTerm} />
+      <CourseList
+        courses={courses}
+        term={term}
+        selectedCards={selectedCards}
+        toggleSelectedCards={toggleSelectedCards}
+      />
     </div>
   );
 };
