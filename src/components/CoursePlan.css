@@ -1,0 +1,11 @@
+.course-plan {
+  padding: 20px; /* Adjust padding for the overall component */
+}
+
+.card {
+  transition: transform 0.2s; /* Add a hover effect */
+}
+
+.card:hover {
+  transform: scale(1.02); /* Slightly enlarge the card on hover */
+}

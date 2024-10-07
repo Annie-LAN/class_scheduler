@@ -1,5 +1,7 @@
 import { useState } from "react";
 import CourseList from "./CourseList";
+import Modal from "./Modal";
+import CoursePlan from "./CoursePlan";
 
 const terms = ["Fall", "Winter", "Spring"];
 
@@ -35,6 +37,10 @@ const TermSelector = ({ selectedTerm, setTerm }) => (
 const TermPage = ({ courses }) => {
   const [term, setTerm] = useState(terms[0]);
   const [selectedCards, setSelectedCards] = useState([]);
+  const [open, setOpen] = useState(false);
+
+  const openModal = () => setOpen(true);
+  const closeModal = () => setOpen(false);
 
   const toggleSelectedCards = (item) =>
     setSelectedCards(
@@ -45,13 +51,21 @@ const TermPage = ({ courses }) => {
 
   return (
     <div>
-      <TermSelector selectedTerm={term} setTerm={setTerm} />
+      <div className="d-flex">
+        <TermSelector selectedTerm={term} setTerm={setTerm} />
+        <button className="btn btn-outline-dark ms-auto" onClick={openModal}>
+          Course Plan
+        </button>
+      </div>
       <CourseList
         courses={courses}
         term={term}
         selectedCards={selectedCards}
         toggleSelectedCards={toggleSelectedCards}
       />
+      <Modal open={open} close={closeModal}>
+        <CoursePlan selectedCards={selectedCards} courses={courses} />
+      </Modal>
     </div>
   );
 };
