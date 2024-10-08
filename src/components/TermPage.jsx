@@ -36,17 +36,17 @@ const TermSelector = ({ selectedTerm, setTerm }) => (
 
 const TermPage = ({ courses }) => {
   const [term, setTerm] = useState(terms[0]);
-  const [selectedCards, setSelectedCards] = useState([]);
+  const [selectedCourses, setSelectedCourses] = useState([]);
   const [open, setOpen] = useState(false);
 
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
 
-  const toggleSelectedCards = (item) =>
-    setSelectedCards(
-      selectedCards.includes(item)
-        ? selectedCards.filter((x) => x !== item)
-        : [...selectedCards, item]
+  const toggleSelectedCourses = (item) =>
+    setSelectedCourses(
+      selectedCourses.includes(item)
+        ? selectedCourses.filter((x) => x !== item)
+        : [...selectedCourses, item]
     );
 
   return (
@@ -60,11 +60,11 @@ const TermPage = ({ courses }) => {
       <CourseList
         courses={courses}
         term={term}
-        selectedCards={selectedCards}
-        toggleSelectedCards={toggleSelectedCards}
+        selectedCourses={selectedCourses}
+        toggleSelectedCourses={toggleSelectedCourses}
       />
       <Modal open={open} close={closeModal}>
-        <CoursePlan selectedCards={selectedCards} courses={courses} />
+        <CoursePlan selectedCourses={selectedCourses} courses={courses} />
       </Modal>
     </div>
   );

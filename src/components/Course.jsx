@@ -1,11 +1,11 @@
 import "./Course.css";
 
-const Course = ({ id, course, selectedCards, toggleSelectedCards }) => (
+const Course = ({ id, course, selectedCourses, toggleSelectedCourses }) => (
   <div
     className={`card m-1 p-2 ${
-      selectedCards.includes(id) ? "selectedCards" : ""
+      selectedCourses.includes(id) ? "selectedCourses" : ""
     }`}
-    onClick={() => toggleSelectedCards(id)}
+    onClick={() => toggleSelectedCourses(id)}
   >
     <div className="card-body">
       <h5 className="fw-semibold card-title">

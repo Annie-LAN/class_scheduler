@@ -1,14 +1,14 @@
 import "./CoursePlan.css";
 
-const CoursePlan = ({ selectedCards, courses }) => (
+const CoursePlan = ({ selectedCourses, courses }) => (
   <div className="course-plan">
     <h3 className="mb-3">Selected Courses</h3>
-    {selectedCards.length === 0 ? (
+    {selectedCourses.length === 0 ? (
       <p className="text-muted">
         The course list is empty. Click on a course to select or deselect it.
       </p>
     ) : (
-      selectedCards.map((id) => {
+      selectedCourses.map((id) => {
         const course = courses[id];
         return (
           <div key={id} className="card mb-3">

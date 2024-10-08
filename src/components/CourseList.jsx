@@ -1,7 +1,12 @@
 import Course from "./Course";
 import "./CourseList.css";
 
-const CourseList = ({ courses, term, selectedCards, toggleSelectedCards }) => {
+const CourseList = ({
+  courses,
+  term,
+  selectedCourses,
+  toggleSelectedCourses,
+}) => {
   return (
     <div className="course-list">
       {Object.entries(courses)
@@ -11,8 +16,8 @@ const CourseList = ({ courses, term, selectedCards, toggleSelectedCards }) => {
             key={id}
             id={id}
             course={course}
-            selectedCards={selectedCards}
-            toggleSelectedCards={toggleSelectedCards}
+            selectedCourses={selectedCourses}
+            toggleSelectedCourses={toggleSelectedCourses}
           />
         ))}
     </div>
