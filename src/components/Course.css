@@ -1,19 +1,49 @@
+.selectedCourses {
+  background-color: rgba(76, 175, 80, 0.1); /* Light green background */
+  border: 2px solid #4caf50; /* Green border for selection */
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3); /* Softer green shadow for depth */
+  transform: translateY(-4px); /* Slight lift effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.selectedCourses:hover {
+  background-color: rgba(76, 175, 80, 0.2); /* Slightly darker green on hover */
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4); /* Stronger shadow on hover */
+  transform: translateY(-6px); /* Lift more on hover */
+}
+
+/* Styling for conflicting courses */
+.conflicting {
+  background-color: rgba(
+    255,
+    77,
+    77,
+    0.2
+  ); /* Light red background for conflict */
+  border: 2px solid rgba(255, 77, 77, 0.8); /* Red border for conflict warning */
+  color: #ff4d4d; /* Text color matching the border for emphasis */
+  box-shadow: 0 0 5px rgba(255, 77, 77, 0.4); /* Glowing red shadow */
+  cursor: not-allowed; /* Disable pointer on conflicting courses */
+  filter: grayscale(
+    50%
+  ); /* Reduce saturation slightly to signal it's not selectable */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.conflicting:hover {
+  background-color: rgba(255, 77, 77, 0.3); /* Darker red on hover */
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.5); /* More emphasis on hover */
+}
+
+/* General course card styling */
 .card {
-  transition: transform 0.2s; /* Add a hover effect */
+  padding: 12px;
+  border-radius: 8px; /* Rounded corners */
+  margin: 8px 0;
+  transition: transform 0.3s ease-in-out;
 }
 
 .card:hover {
-  transform: scale(1.02); /* Slightly enlarge the card on hover */
-}
-
-.selectedCourses {
-  background-color: rgba(76, 175, 80, 0.1);
-  border: 2px solid #4caf50; /* Highlight border */
-  box-shadow: 0 4px 12px rgba(0, 128, 0, 0.2); /* Lifted effect */
-  transform: translateY(-4px); /* Slight lift effect */
-  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-}
-
-.conflicting {
-  background-color: lightcoral;
+  transform: scale(1.03); /* Slight zoom on hover */
 }
