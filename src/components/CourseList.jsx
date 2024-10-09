@@ -5,7 +5,8 @@ const CourseList = ({
   courses,
   term,
   selectedCourses,
-  toggleSelectedCourses,
+  conflictingCourses,
+  handleCourseSelection,
 }) => {
   return (
     <div className="course-list">
@@ -17,7 +18,8 @@ const CourseList = ({
             id={id}
             course={course}
             selectedCourses={selectedCourses}
-            toggleSelectedCourses={toggleSelectedCourses}
+            conflictingCourses={conflictingCourses}
+            handleCourseSelection={handleCourseSelection}
           />
         ))}
     </div>

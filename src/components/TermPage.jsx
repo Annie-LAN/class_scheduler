@@ -2,6 +2,7 @@ import { useState } from "react";
 import CourseList from "./CourseList";
 import Modal from "./Modal";
 import CoursePlan from "./CoursePlan";
+import { checkTimeConflict } from "../utilities/detectTimeConflict";
 
 const terms = ["Fall", "Winter", "Spring"];
 
@@ -38,16 +39,49 @@ const TermPage = ({ courses }) => {
   const [term, setTerm] = useState(terms[0]);
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [open, setOpen] = useState(false);
+  const [conflictingCourses, setConflictingCourses] = useState([]);
 
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
 
-  const toggleSelectedCourses = (item) =>
-    setSelectedCourses(
-      selectedCourses.includes(item)
-        ? selectedCourses.filter((x) => x !== item)
-        : [...selectedCourses, item]
-    );
+  const handleCourseSelection = (courseId) => {
+    // disable selection if the course is conflicting
+    if (conflictingCourses.includes(courseId)) {
+      return;
+    }
+
+    const isSelected = selectedCourses.includes(courseId);
+
+    if (isSelected) {
+      // Remove course from selectedCourses
+      const newSelectedCourses = selectedCourses.filter(
+        (id) => id !== courseId
+      );
+      setSelectedCourses(newSelectedCourses);
+
+      // Update conflicting courses
+      const newConflictingCourses = Object.keys(courses).filter((id) => {
+        if (newSelectedCourses.includes(id)) return false;
+        return newSelectedCourses.some((selectedId) =>
+          checkTimeConflict(courses[id], courses[selectedId])
+        );
+      });
+      setConflictingCourses(newConflictingCourses);
+    } else {
+      // Add course to selectedCourses
+      const newSelectedCourses = [...selectedCourses, courseId];
+      setSelectedCourses(newSelectedCourses);
+
+      // Update conflicting courses
+      const newConflictingCourses = Object.keys(courses).filter((id) => {
+        if (newSelectedCourses.includes(id)) return false;
+        return newSelectedCourses.some((selectedId) =>
+          checkTimeConflict(courses[id], courses[selectedId])
+        );
+      });
+      setConflictingCourses(newConflictingCourses);
+    }
+  };
 
   return (
     <div>
@@ -61,7 +95,8 @@ const TermPage = ({ courses }) => {
         courses={courses}
         term={term}
         selectedCourses={selectedCourses}
-        toggleSelectedCourses={toggleSelectedCourses}
+        conflictingCourses={conflictingCourses}
+        handleCourseSelection={handleCourseSelection}
       />
       <Modal open={open} close={closeModal}>
         <CoursePlan selectedCourses={selectedCourses} courses={courses} />
