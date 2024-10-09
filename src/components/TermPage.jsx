@@ -2,7 +2,7 @@ import { useState } from "react";
 import CourseList from "./CourseList";
 import Modal from "./Modal";
 import CoursePlan from "./CoursePlan";
-import { checkTimeConflict } from "../utilities/detectTimeConflict";
+import { findConflictingCourses } from "../utilities/detectTimeConflict";
 
 const terms = ["Fall", "Winter", "Spring"];
 
@@ -50,37 +50,19 @@ const TermPage = ({ courses }) => {
       return;
     }
 
+    // update selectedCourses
     const isSelected = selectedCourses.includes(courseId);
+    const newSelectedCourses = isSelected
+      ? selectedCourses.filter((id) => id !== courseId) // Remove course
+      : [...selectedCourses, courseId]; // Add course
+    setSelectedCourses(newSelectedCourses);
 
-    if (isSelected) {
-      // Remove course from selectedCourses
-      const newSelectedCourses = selectedCourses.filter(
-        (id) => id !== courseId
-      );
-      setSelectedCourses(newSelectedCourses);
-
-      // Update conflicting courses
-      const newConflictingCourses = Object.keys(courses).filter((id) => {
-        if (newSelectedCourses.includes(id)) return false;
-        return newSelectedCourses.some((selectedId) =>
-          checkTimeConflict(courses[id], courses[selectedId])
-        );
-      });
-      setConflictingCourses(newConflictingCourses);
-    } else {
-      // Add course to selectedCourses
-      const newSelectedCourses = [...selectedCourses, courseId];
-      setSelectedCourses(newSelectedCourses);
-
-      // Update conflicting courses
-      const newConflictingCourses = Object.keys(courses).filter((id) => {
-        if (newSelectedCourses.includes(id)) return false;
-        return newSelectedCourses.some((selectedId) =>
-          checkTimeConflict(courses[id], courses[selectedId])
-        );
-      });
-      setConflictingCourses(newConflictingCourses);
-    }
+    // update conflictingCourses
+    const newConflictingCourses = findConflictingCourses(
+      courses,
+      newSelectedCourses
+    );
+    setConflictingCourses(newConflictingCourses);
   };
 
   return (

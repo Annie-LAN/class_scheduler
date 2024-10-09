@@ -1,4 +1,13 @@
-export const checkTimeConflict = (courseA, courseB) => {
+export const findConflictingCourses = (courses, selectedCourses) => {
+  return Object.keys(courses).filter((id) => {
+    if (selectedCourses.includes(id)) return false;
+    return selectedCourses.some((selectedId) =>
+      checkTimeConflict(courses[id], courses[selectedId])
+    );
+  });
+};
+
+const checkTimeConflict = (courseA, courseB) => {
   if (
     courseA.term !== courseB.term ||
     courseA.meets.length === 0 ||
