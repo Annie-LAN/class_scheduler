@@ -1,4 +1,5 @@
 import "./Course.css";
+import { Link } from "react-router-dom";
 
 const Course = ({
   id,
@@ -25,6 +26,9 @@ const Course = ({
       </div>
       <div className="card-footer bg-transparent">
         <p className="card-text">{course.meets}</p>
+        <p>
+          <Link to={`/editCourse/${id}`}>Edit the Course</Link>
+        </p>
       </div>
     </div>
   );
