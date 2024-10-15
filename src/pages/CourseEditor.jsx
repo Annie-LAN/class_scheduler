@@ -2,17 +2,23 @@ import { useParams, useNavigate } from "react-router-dom";
 
 ////////////////////////////////////////////////////////////////
 // import { useDbUpdate } from '../utilities/firebase';
-// import { useFormData } from './utilities/useFormData';
+import { useFormData } from "../utilities/useFormData";
 
-// const validateUserData = (key, val) => {
-//   switch (key) {
-//     case 'firstName': case 'lastName':
-//       return /(^\w\w)/.test(val) ? '' : 'must be least two characters';
-//     case 'email':
-//       return /^\w+@\w+[.]\w+/.test(val) ? '' : 'must contain name@domain.top-level-domain';
-//     default: return '';
-//   }
-// };
+const validateUserData = (key, val) => {
+  switch (key) {
+    case "title":
+      return /(^\w\w)/.test(val) ? "" : "Title must be least two characters";
+    case "meets":
+      return val === "" ||
+        /^((M|Tu|W|Th|F)+(,\s*(M|Tu|W|Th|F)+)*)\s+(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})$/.test(
+          val
+        )
+        ? ""
+        : "Meeting time must contain weekdays and a time range, e.g., MWF 12:00-13:20";
+    default:
+      return "";
+  }
+};
 
 const InputField = ({ name, text, state, change }) => (
   <div className="mb-3">
@@ -44,7 +50,7 @@ const InputField = ({ name, text, state, change }) => (
 const UserEditor = ({ user }) => {
   const navigate = useNavigate();
   // const [update, result] = useDbUpdate(`/users/${user.id}`);
-  // const [state, change] = useFormData(validateUserData, user);
+  const [state, change] = useFormData(validateUserData, user);
   const submit = (evt) => {
     // evt.preventDefault();
     // if (!state.errors) {
@@ -57,15 +63,15 @@ const UserEditor = ({ user }) => {
   return (
     <form
       onSubmit={submit}
-      // noValidate
-      // className={state.errors ? "was-validated" : null}
+      noValidate
+      className={state.errors ? "was-validated" : null}
     >
-      {/* <InputField name="title" text="Title" state={state} change={change} />
-      <InputField name="meets" text="Meets" state={state} change={change} /> */}
-      <label>Title</label>
+      <InputField name="title" text="Title" state={state} change={change} />
+      <InputField name="meets" text="Meets" state={state} change={change} />
+      {/* <label>Title</label>
       <input name="title" />
       <label>Meets</label>
-      <input name="meets" />
+      <input name="meets" /> */}
       {/* <ButtonBar message={result?.message} /> */}
       <button type="button" onClick={() => navigate(-1)}>
         Cancel
