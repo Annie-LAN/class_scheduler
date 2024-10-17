@@ -1,15 +1,12 @@
-import { useJsonQuery } from "../utilities/fetch";
 import Banner from "../components/Banner";
 import TermPage from "../components/TermPage";
+import { useDbData } from "../utilities/firebase";
 
 const Main = () => {
-  const [data, isLoading, error] = useJsonQuery(
-    "https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php"
-  );
-
-  if (error) return <h1>Error loading user data: {`${error}`}</h1>;
-  if (isLoading) return <h1>Loading user data...</h1>;
-  if (!data) return <h1>No user data found</h1>;
+  const [data, error] = useDbData("/");
+  if (error) return <h1>Error loading data: {error.toString()}</h1>;
+  if (data === undefined) return <h1>Loading data...</h1>;
+  if (!data) return <h1>No data found</h1>;
 
   return (
     <div className="container">
