@@ -1,10 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
-
-////////////////////////////////////////////////////////////////
-// import { useDbUpdate } from '../utilities/firebase';
+import { useDbUpdate } from "../utilities/firebase";
 import { useFormData } from "../utilities/useFormData";
 
-const validateUserData = (key, val) => {
+const validateFormData = (key, val) => {
   switch (key) {
     case "title":
       return /(^\w\w)/.test(val) ? "" : "Title must be least two characters";
@@ -36,28 +34,38 @@ const InputField = ({ name, text, state, change }) => (
   </div>
 );
 
-// const ButtonBar = ({message, disabled}) => {
-//   const navigate = useNavigate();
-//   return (
-//     <div className="d-flex">
-//       <button type="button" className="btn btn-outline-dark me-2" onClick={() => navigate(-1)}>Cancel</button>
-//       <button type="submit" className="btn btn-primary me-auto" disabled={disabled}>Submit</button>
-//       <span className="p-2">{message}</span>
-//     </div>
-//   );
-// };
-
-const UserEditor = ({ user }) => {
+const ButtonBar = ({ message, disabled }) => {
   const navigate = useNavigate();
-  // const [update, result] = useDbUpdate(`/users/${user.id}`);
-  const [state, change] = useFormData(validateUserData, user);
-  const submit = (evt) => {
-    // evt.preventDefault();
-    // if (!state.errors) {
-    //   update(state.values);
-    // }
+  return (
+    <div className="d-flex">
+      <button
+        type="button"
+        className="btn btn-outline-dark me-2"
+        onClick={() => navigate(-1)}
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        className="btn btn-primary me-auto"
+        disabled={disabled}
+      >
+        Submit
+      </button>
+      <span className="p-2">{message}</span>
+    </div>
+  );
+};
 
-    console.log("Submit not implemented");
+const FormEditor = ({ courseId }) => {
+  const navigate = useNavigate();
+  const [update, result] = useDbUpdate(`/courses/${courseId}`);
+  const [state, change] = useFormData(validateFormData);
+  const submit = (evt) => {
+    evt.preventDefault();
+    if (!state.errors) {
+      update(state.values);
+    }
   };
 
   return (
@@ -68,26 +76,18 @@ const UserEditor = ({ user }) => {
     >
       <InputField name="title" text="Title" state={state} change={change} />
       <InputField name="meets" text="Meets" state={state} change={change} />
-      {/* <label>Title</label>
-      <input name="title" />
-      <label>Meets</label>
-      <input name="meets" /> */}
-      {/* <ButtonBar message={result?.message} /> */}
-      <button type="button" onClick={() => navigate(-1)}>
-        Cancel
-      </button>
+
+      <ButtonBar message={result?.message} />
     </form>
   );
 };
-
-////////////////////////////////////////////////////////////////
 
 const CourseEditor = () => {
   const { id } = useParams();
   return (
     <div className="container">
-      <p>Edit Course {id}</p>
-      <UserEditor />
+      <h4>Editing Course {id}</h4>
+      <FormEditor courseId={id} />
     </div>
   );
 };
