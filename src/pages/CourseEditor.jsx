@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useDbUpdate } from "../utilities/firebase";
 import { useFormData } from "../utilities/useFormData";
+import Banner from "../components/Banner";
 
 const validateFormData = (key, val) => {
   switch (key) {
@@ -82,10 +83,11 @@ const FormEditor = ({ courseId }) => {
   );
 };
 
-const CourseEditor = () => {
+const CourseEditor = ({ title }) => {
   const { id } = useParams();
   return (
     <div className="container">
+      <Banner title={title} />
       <h4>Editing Course {id}</h4>
       <FormEditor courseId={id} />
     </div>

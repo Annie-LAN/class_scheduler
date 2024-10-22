@@ -1,5 +1,6 @@
 import "./Course.css";
 import { Link } from "react-router-dom";
+import { useAuthState } from "../utilities/firebase";
 
 const Course = ({
   id,
@@ -10,6 +11,8 @@ const Course = ({
 }) => {
   const isSelected = selectedCourses.includes(id);
   const isConflicting = conflictingCourses.includes(id);
+
+  const [user] = useAuthState();
 
   return (
     <div
@@ -26,9 +29,11 @@ const Course = ({
       </div>
       <div className="card-footer bg-transparent">
         <p className="card-text">{course.meets}</p>
-        <p>
-          <Link to={`/editCourse/${id}`}>Edit the Course</Link>
-        </p>
+        {user && (
+          <p>
+            <Link to={`/editCourse/${id}`}>Edit the Course</Link>
+          </p>
+        )}
       </div>
     </div>
   );
