@@ -1,6 +1,6 @@
 import "./Course.css";
 import { Link } from "react-router-dom";
-import { useAuthState } from "../utilities/firebase";
+import { useProfile } from "../utilities/profile";
 
 const Course = ({
   id,
@@ -12,7 +12,10 @@ const Course = ({
   const isSelected = selectedCourses.includes(id);
   const isConflicting = conflictingCourses.includes(id);
 
-  const [user] = useAuthState();
+  const [profile, profileLoading, profileError] = useProfile();
+  if (profileError) return <h1>Error loading profile: {`${profileError}`}</h1>;
+  if (profileLoading) return <h1>Loading user profile</h1>;
+  if (!profile) return <h1>No profile data</h1>;
 
   return (
     <div
@@ -29,7 +32,7 @@ const Course = ({
       </div>
       <div className="card-footer bg-transparent">
         <p className="card-text">{course.meets}</p>
-        {user && (
+        {profile?.isAdmin && (
           <p>
             <Link to={`/editCourse/${id}`}>Edit the Course</Link>
           </p>

@@ -3,6 +3,7 @@ import CourseList from "./CourseList";
 import Modal from "./Modal";
 import CoursePlan from "./CoursePlan";
 import { findConflictingCourses } from "../utilities/detectTimeConflict";
+import { useAuthState } from "../utilities/firebase";
 
 const terms = ["Fall", "Winter", "Spring"];
 
@@ -41,6 +42,8 @@ const TermPage = ({ courses }) => {
   const [open, setOpen] = useState(false);
   const [conflictingCourses, setConflictingCourses] = useState([]);
 
+  const [user] = useAuthState();
+
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
 
@@ -65,7 +68,7 @@ const TermPage = ({ courses }) => {
     setConflictingCourses(newConflictingCourses);
   };
 
-  return (
+  return user ? (
     <div>
       <div className="d-flex">
         <TermSelector selectedTerm={term} setTerm={setTerm} />
@@ -84,6 +87,8 @@ const TermPage = ({ courses }) => {
         <CoursePlan selectedCourses={selectedCourses} courses={courses} />
       </Modal>
     </div>
+  ) : (
+    <p>Log in to see the courses</p>
   );
 };
 
